@@ -52,3 +52,39 @@ const buildTable = () => {
 };
 
 buildTable();
+
+// add a new function to the array prototype that will allow us to get unique items
+Array.prototype.unique = function (field) {
+  const newArray = [];
+  this.forEach((record) => {
+    const { [field]: targetField } = record;
+    if (!newArray.includes(targetField)) {
+      newArray.push(targetField);
+    }
+  });
+  return newArray;
+};
+
+const handleFilterChange = (e) => {
+  if (e.target.value == '0') {
+    filteredData = state.items;
+  } else {
+    filteredData = state.items.filter((d) => d.category == e.target.value);
+  }
+  buildTable();
+};
+
+const buildFilterBox = () => {
+  const categories = data.unique('category');
+  let html =
+    '<select id="category-filter"><option value="0">Select a Category to filter by</option>';
+  categories.map((c) => {
+    html += `<option value=${c}>${c}</option>`;
+  });
+  html += '</select>';
+  document.getElementById('filter').innerHTML = html;
+  const newSelect = document.getElementById('category-filter');
+  newSelect.addEventListener('change', handleFilterChange);
+};
+
+buildFilterBox();
