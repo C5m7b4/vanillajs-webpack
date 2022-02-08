@@ -1,6 +1,6 @@
 console.log('you are ready to start coding...');
 import { data } from './data';
-import { isValid } from './utils';
+import { isValid, formatMoney } from './utils';
 import './styles.css';
 
 let filteredData = data;
@@ -111,12 +111,16 @@ for (let input of inputs) {
 
 // now we need to build a table for our products
 const buildTable = () => {
-  let html = `<table style="width: 90%; margin: 20px auto; cell-padding: 2px; color: #000"><tr><th>Products</th><th<Size</th><th>Price</th><th>Category</th><th>Delete<th></tr>`;
+  let html = `<table style="width: 90%; margin: 20px auto; cell-padding: 2px; color: #000"><tr><th>Products</th><th>Size</th><th>Price</th><th>Category</th><th>Delete</th></tr>`;
   filteredData.map((item) => {
     const { name, id, size, price, category } = item;
-    html += `<tr><td>${name}</td><td>${size}</td><td>${price}</td><td>${category}</td><td id="tr-${id}" style="cursor:pointer" data-delete="${id}">Delete</td></tr>`;
+    html += `<tr><td>${name}</td><td>${size}</td><td>${formatMoney(
+      price
+    )}</td><td>${category}</td><td id="tr-${id}" style="cursor:pointer" data-delete="${id}">Delete</td></tr>`;
   });
-  html += `<tr><td colspan="2"></td><td>${getTotal()}</td><td colspan="2"></td></tr>`;
+  html += `<tr><td colspan="2"></td><td>${formatMoney(
+    getTotal()
+  )}</td><td colspan="2"></td></tr>`;
   html += '</table';
   document.getElementById('items').innerHTML = html;
   buildDeleteLinks();
