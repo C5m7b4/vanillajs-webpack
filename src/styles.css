@@ -86,13 +86,25 @@ input {
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+.row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .col-2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-top: 8px;
 }
 
 label {
   min-width: 100px;
   display: block;
+  text-align: left;
+  margin-left: -80px;
 }
 
 .new-item {
