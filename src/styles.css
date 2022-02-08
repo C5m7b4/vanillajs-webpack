@@ -122,7 +122,8 @@ label {
 }
 
 .filter-div select,
-.item-category select {
+.item-category select,
+#category {
   padding: 6px 14px;
   border-radius: 8px;
   outline: none;
