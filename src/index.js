@@ -15,6 +15,18 @@ const state = {
   },
 };
 
+const getTotal = () => {
+  return filteredData.reduce((acc, cur) => {
+    return acc + +cur.price;
+  }, 0);
+};
+
+const clearForm = () => {
+  Object.keys(state.currentItem).map((key) => {
+    document.getElementById(key).value = '';
+  });
+};
+
 const buildDeleteLinks = () => {
   const deletes = document.querySelectorAll('td[data-delete]');
   for (let del of deletes) {
@@ -104,6 +116,7 @@ const buildTable = () => {
     const { name, id, size, price, category } = item;
     html += `<tr><td>${name}</td><td>${size}</td><td>${price}</td><td>${category}</td><td id="tr-${id}" style="cursor:pointer" data-delete="${id}">Delete</td></tr>`;
   });
+  html += `<tr><td colspan="2"></td><td>${getTotal()}</td><td colspan="2"></td></tr>`;
   html += '</table';
   document.getElementById('items').innerHTML = html;
   buildDeleteLinks();
@@ -191,3 +204,28 @@ const compose =
 const pipedFn = compose(findCategoryMostExpensiveItem, curriedFilter)('candy');
 console.log('most expensive beverage');
 console.log(pipedFn);
+
+const saveItem = () => {
+  const copiedItems = [...state.items, state.currentItem];
+  state.items = copiedItems;
+  filteredData = copiedItems;
+  buildTable();
+  clearForm();
+};
+
+const saveButton = document.getElementById('save-item');
+saveButton.addEventListener('click', saveItem);
+
+const createItemCategory = () => {
+  const categories = data.unique('category');
+  let html =
+    '<select id="category"><option value="0">Select a Category to filter by</option>';
+  categories.map((c) => {
+    html += `<option value=${c}>${c}</option>`;
+  });
+  html += '</select>';
+  document.getElementById('item-category').innerHTML = html;
+  const newSelect = document.getElementById('category');
+  newSelect.addEventListener('change', changeState);
+};
+createItemCategory();
