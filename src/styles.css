@@ -109,7 +109,8 @@ label {
   margin-top: 10px;
 }
 
-.filter-div select {
+.filter-div select,
+.item-category select {
   padding: 6px 14px;
   border-radius: 8px;
   outline: none;
