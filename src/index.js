@@ -24,6 +24,54 @@ const buildDeleteLinks = () => {
   }
 };
 
+const getCheapestItem = () => {
+  return filteredData.reduce((acc, cur) => {
+    if (acc.price < cur.price) {
+      return acc;
+    } else {
+      return cur;
+    }
+  }, 9999);
+};
+
+const displayCheapestItem = () => {
+  const parent = document.getElementById('stats');
+  const divName = 'cheapest-div';
+  const existing = document.getElementById(divName);
+  if (existing) {
+    parent.removeChild(existing);
+  }
+  const cheapest = getCheapestItem();
+  const div = document.createElement('div');
+  div.id = divName;
+  div.innerHTML = `The cheapest item is ${cheapest.name} and it is ${cheapest.price}`;
+  parent.appendChild(div);
+};
+
+const mostExpensive = () => {
+  return filteredData.reduce((acc, cur) => {
+    if (acc.price > cur.price) {
+      return acc;
+    } else {
+      return cur;
+    }
+  }, 0);
+};
+
+const displayMostExpensive = () => {
+  const parent = document.getElementById('stats');
+  const divName = 'most-expensive';
+  const existing = document.getElementById(divName);
+  if (existing) {
+    parent.removeChild(existing);
+  }
+  const highest = mostExpensive();
+  const div = document.createElement('div');
+  div.id = divName;
+  div.innerHTML = `The most expensive item is ${highest.name} and it is ${highest.price}`;
+  parent.appendChild(div);
+};
+
 const changeState = (identifier) => {
   const { id, value } = identifier.target;
   if (!isValid(value) || !isValid(id)) return;
@@ -59,6 +107,8 @@ const buildTable = () => {
   html += '</table';
   document.getElementById('items').innerHTML = html;
   buildDeleteLinks();
+  displayMostExpensive();
+  displayCheapestItem();
 };
 
 buildTable();
@@ -126,23 +176,3 @@ const candy = curriedFilter('candy');
 console.log('fruits', fruits);
 console.log('bevs', bevs);
 console.log('candy', candy);
-
-// lets go through reducing
-const getCheapestItem = () => {
-  return filteredData.reduce((acc, cur) => {
-    if (acc.price < cur.price) {
-      return acc;
-    } else {
-      return cur;
-    }
-  }, 9999);
-};
-
-const displayCheapestItem = () => {
-  const cheapest = getCheapestItem();
-  const div = document.createElement('div');
-  const parent = document.getElementById('stats');
-  div.innerHTML = `The cheapest item is ${cheapest.name} and it is ${cheapest.price}`;
-  parent.appendChild(div);
-};
-displayCheapestItem();
